@@ -6,12 +6,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.createGraph
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.fragment
 import com.google.gson.Gson
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.util.zip.GZIPInputStream
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var parentNavController: NavController
+    private lateinit var bbItemStocks: TextView
+    private lateinit var bbItemMutualFunds: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,7 +27,37 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        findViewById<TextView>(R.id.tv1).text = getStocks()
+        initialiseViews()
+        setupNavGraph()
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
+        bbItemStocks.setOnClickListener {
+            navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+        }
+
+        bbItemMutualFunds.setOnClickListener {
+            navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+        }
+    }
+
+    private fun initialiseViews() {
+        bbItemStocks = findViewById(R.id.bb_item_stocks)
+        bbItemMutualFunds = findViewById(R.id.bb_item_mutual_funds)
+    }
+
+    private fun setupNavGraph() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        parentNavController = navHostFragment.navController
+
+        parentNavController.graph = parentNavController.createGraph(
+            startDestination = CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+        ) {
+            fragment<StocksFragment>(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+            fragment<MutualFundsFragment>(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+        }
     }
 
     private fun getStocks(): CharSequence {
@@ -30,5 +65,19 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val data: List<Map<String, String>> = gson.fromJson(json, List::class.java) as List<Map<String, String>>
         return data.toString()
+    }
+
+    /**
+     * Navigate to the given destination if it's not the current destination
+     */
+    private fun navigateIfNotCurrent(destinationRoute: String) {
+        val currentDestinationRoute = parentNavController.currentDestination?.route
+        if (currentDestinationRoute != destinationRoute) {
+            parentNavController.navigate(destinationRoute) {
+                popUpTo(parentNavController.graph.startDestinationId) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+        }
     }
 }
