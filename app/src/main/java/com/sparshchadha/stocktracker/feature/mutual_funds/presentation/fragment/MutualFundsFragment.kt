@@ -1,10 +1,11 @@
-package com.sparshchadha.stocktracker
+package com.sparshchadha.stocktracker.feature.mutual_funds.presentation.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.compose.material3.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.sparshchadha.stocktracker.R
 
 class MutualFundsFragment: Fragment(R.layout.fragment_mutual_funds) {
     private lateinit var cvMutualFundsFragment: ComposeView

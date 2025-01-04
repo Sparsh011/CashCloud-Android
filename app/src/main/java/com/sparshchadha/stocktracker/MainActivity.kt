@@ -11,6 +11,9 @@ import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
 import com.google.gson.Gson
+import com.sparshchadha.stocktracker.feature.mutual_funds.presentation.fragment.MutualFundsFragment
+import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StocksFragment
+import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 
 class MainActivity : AppCompatActivity() {
     private lateinit var parentNavController: NavController

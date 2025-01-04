@@ -1,4 +1,4 @@
-package com.sparshchadha.stocktracker
+package com.sparshchadha.stocktracker.navigation
 
 object CashCloudNavGraph {
     object BottomBarScreenRoutes {
