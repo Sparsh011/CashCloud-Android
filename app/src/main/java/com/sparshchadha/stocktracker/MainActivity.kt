@@ -41,15 +41,13 @@ class MainActivity : AppCompatActivity() {
                 label = "Stock Details"
             }
             fragment<MainHostFragment>(CashCloudNavGraph.MainScreenRoutes.MAIN_HOST_SCREEN) {
-                label = "Stock Details"
+                label = "Main Host Fragment"
             }
         }
     }
 
     private fun setWindowAttributes() {
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_container)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(bottom = systemBars.bottom)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_container)) { _, insets ->
             insets
         }
 

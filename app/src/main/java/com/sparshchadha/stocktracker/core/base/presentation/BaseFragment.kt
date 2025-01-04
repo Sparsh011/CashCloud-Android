@@ -3,8 +3,6 @@ package com.sparshchadha.stocktracker.core.base.presentation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.fragment.findNavController
 import com.sparshchadha.stocktracker.R
 
 /**

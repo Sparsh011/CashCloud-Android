@@ -2,28 +2,55 @@ package com.sparshchadha.stocktracker.core.base.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
 import com.sparshchadha.stocktracker.R
+import com.sparshchadha.stocktracker.core.theme.bottomBarBackgroundColor
+import com.sparshchadha.stocktracker.core.theme.bottomBarSelectedIconColor
+import com.sparshchadha.stocktracker.core.theme.bottomBarUnselectedIconColor
 import com.sparshchadha.stocktracker.feature.mutual_funds.presentation.fragment.MutualFundsFragment
 import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StocksFragment
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 
-class MainHostFragment: BaseFragment(R.layout.fragment_main_host) {
+class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     private lateinit var navController: NavController
-    private lateinit var bbItemStocks: TextView
-    private lateinit var bbItemMutualFunds: TextView
+    private lateinit var bbItemStocks: ComposeView
+    private lateinit var bbItemMutualFunds: ComposeView
+    private var selectedBottomBarItem =
+        mutableStateOf(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("SELECTED_BOTTOM_BAR_ICON", selectedBottomBarItem.value)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        selectedBottomBarItem.value = savedInstanceState?.getString("SELECTED_BOTTOM_BAR_ICON") ?: CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initialiseViewsUsingView(view)
         initializeNavController()
-        setOnClickListeners()
+        setupBottomBar()
     }
 
     private fun initialiseViewsUsingView(view: View) {
@@ -63,13 +90,55 @@ class MainHostFragment: BaseFragment(R.layout.fragment_main_host) {
         }
     }
 
-    private fun setOnClickListeners() {
-        bbItemStocks.setOnClickListener {
-            navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+    private fun setupBottomBar() {
+        bbItemStocks.setContent {
+            Column(
+                modifier = Modifier
+                    .background(bottomBarBackgroundColor)
+                    .fillMaxWidth()
+                    .clickable {
+                        selectedBottomBarItem.value = CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+                        navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_stocks),
+                    contentDescription = null,
+                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                )
+
+                Text(
+                    text = "Stocks",
+                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                )
+            }
         }
 
-        bbItemMutualFunds.setOnClickListener {
-            navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+        bbItemMutualFunds.setContent {
+            Column(
+                modifier = Modifier
+                    .background(bottomBarBackgroundColor)
+                    .fillMaxWidth()
+                    .clickable {
+                        selectedBottomBarItem.value = CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN
+                        navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_mutual_fund),
+                    contentDescription = null,
+                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                )
+
+                Text(
+                    text = "Mutual Funds",
+                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                )
+            }
         }
     }
 }
