@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="together">
+    <translate
+        android:duration="300"
+        android:fromXDelta="100%"
+        android:toXDelta="0%"
+        android:interpolator="@android:interpolator/decelerate_quint" />
+    <!-- Adding slight scale effect for depth -->
+    <scale
+        android:duration="300"
+        android:fromXScale="0.90"
+        android:fromYScale="0.90"
+        android:toXScale="1"
+        android:toYScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%" />
+    <!-- Slight alpha for smooth entry -->
+    <alpha
+        android:duration="200"
+        android:fromAlpha="0"
+        android:toAlpha="1.0" />
+</set>
