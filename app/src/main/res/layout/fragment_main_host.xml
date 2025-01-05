@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/cv_main_host_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import com.sparshchadha.stocktracker.R
-import com.sparshchadha.stocktracker.core.base.presentation.BaseFragment
+import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
 import com.sparshchadha.stocktracker.core.theme.primaryAppBackground
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
 
@@ -18,7 +18,6 @@ class StockDetailsFragment: BaseFragment(R.layout.fragment_stock_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialiseViewsUsingView(view)
 
         cvStockDetailsFragment.setContent {
             Column (
@@ -30,7 +29,7 @@ class StockDetailsFragment: BaseFragment(R.layout.fragment_stock_details) {
         }
     }
 
-    private fun initialiseViewsUsingView(view: View) {
+    override fun initialiseViewsUsingView(view: View) {
         cvStockDetailsFragment = view.findViewById(R.id.cv_stock_details_fragment)
     }
 }

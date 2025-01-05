@@ -7,6 +7,7 @@ object CashCloudNavGraph {
     }
 
     object MainScreenRoutes {
+        const val SEARCH_SCREEN = "search_screen"
         const val STOCK_DETAILS_SCREEN = "stock_details_screen"
         const val MAIN_HOST_SCREEN = "home_screen"
     }

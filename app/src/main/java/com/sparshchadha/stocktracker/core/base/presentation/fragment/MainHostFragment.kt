@@ -1,4 +1,4 @@
-package com.sparshchadha.stocktracker.core.base.presentation
+package com.sparshchadha.stocktracker.core.base.presentation.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -19,8 +19,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.fragment
 import com.sparshchadha.stocktracker.R
+import com.sparshchadha.stocktracker.core.base.presentation.compose.MainHostFragmentTopBar
+import com.sparshchadha.stocktracker.core.common.utils.CashCloudNavigationAnimationSpec
 import com.sparshchadha.stocktracker.core.theme.bottomBarBackgroundColor
 import com.sparshchadha.stocktracker.core.theme.bottomBarSelectedIconColor
 import com.sparshchadha.stocktracker.core.theme.bottomBarUnselectedIconColor
@@ -34,6 +37,7 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     private lateinit var bbItemMutualFunds: ComposeView
     private var selectedBottomBarItem =
         mutableStateOf(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+    private lateinit var cvTopBar: ComposeView
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -42,20 +46,30 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        selectedBottomBarItem.value = savedInstanceState?.getString("SELECTED_BOTTOM_BAR_ICON") ?: CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+        selectedBottomBarItem.value = savedInstanceState?.getString("SELECTED_BOTTOM_BAR_ICON")
+            ?: CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initialiseViewsUsingView(view)
         initializeNavController()
+        setupTopBar()
         setupBottomBar()
     }
 
-    private fun initialiseViewsUsingView(view: View) {
+    private fun setupTopBar() {
+        cvTopBar.setContent {
+            MainHostFragmentTopBar(onSearchIconClick = {
+                addFragmentToBackStack(findNavController(), CashCloudNavGraph.MainScreenRoutes.SEARCH_SCREEN, CashCloudNavigationAnimationSpec.EXPAND_FROM_TOUCH_POINT)
+            })
+        }
+    }
+
+    override fun initialiseViewsUsingView(view: View) {
         bbItemStocks = view.findViewById(R.id.bb_item_stocks)
         bbItemMutualFunds = view.findViewById(R.id.bb_item_mutual_funds)
+        cvTopBar = view.findViewById(R.id.cv_main_host_top_bar)
     }
 
     private fun initializeNavController() {
@@ -97,7 +111,8 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                     .background(bottomBarBackgroundColor)
                     .fillMaxWidth()
                     .clickable {
-                        selectedBottomBarItem.value = CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+                        selectedBottomBarItem.value =
+                            CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
                         navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -122,7 +137,8 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                     .background(bottomBarBackgroundColor)
                     .fillMaxWidth()
                     .clickable {
-                        selectedBottomBarItem.value = CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN
+                        selectedBottomBarItem.value =
+                            CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN
                         navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,

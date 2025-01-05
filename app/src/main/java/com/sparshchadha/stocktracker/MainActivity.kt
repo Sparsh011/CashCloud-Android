@@ -5,15 +5,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.navigation.NavController
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
 import com.google.gson.Gson
-import com.sparshchadha.stocktracker.core.base.presentation.MainHostFragment
+import com.sparshchadha.stocktracker.core.base.presentation.fragment.MainHostFragment
 import com.sparshchadha.stocktracker.core.common.extensions.isDarkThemeOn
+import com.sparshchadha.stocktracker.feature.search.presentation.fragment.SearchFragment
 import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StockDetailsFragment
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 
@@ -42,6 +41,9 @@ class MainActivity : AppCompatActivity() {
             }
             fragment<MainHostFragment>(CashCloudNavGraph.MainScreenRoutes.MAIN_HOST_SCREEN) {
                 label = "Main Host Fragment"
+            }
+            fragment<SearchFragment>(CashCloudNavGraph.MainScreenRoutes.SEARCH_SCREEN) {
+                label = "Search Fragment"
             }
         }
     }
