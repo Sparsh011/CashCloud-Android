@@ -15,7 +15,9 @@ import com.sparshchadha.stocktracker.core.common.extensions.isDarkThemeOn
 import com.sparshchadha.stocktracker.feature.search.presentation.fragment.SearchFragment
 import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StockDetailsFragment
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var parentNavController: NavController
 

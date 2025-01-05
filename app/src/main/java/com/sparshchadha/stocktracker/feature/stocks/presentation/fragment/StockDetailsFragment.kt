@@ -12,7 +12,9 @@ import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
 import com.sparshchadha.stocktracker.core.theme.primaryAppBackground
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StockDetailsFragment: BaseFragment(R.layout.fragment_stock_details) {
     private lateinit var cvStockDetailsFragment: ComposeView
 

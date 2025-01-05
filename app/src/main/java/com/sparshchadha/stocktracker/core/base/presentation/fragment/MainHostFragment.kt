@@ -30,7 +30,9 @@ import com.sparshchadha.stocktracker.core.theme.bottomBarUnselectedIconColor
 import com.sparshchadha.stocktracker.feature.mutual_funds.presentation.fragment.MutualFundsFragment
 import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StocksFragment
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     private lateinit var navController: NavController
     private lateinit var bbItemStocks: ComposeView

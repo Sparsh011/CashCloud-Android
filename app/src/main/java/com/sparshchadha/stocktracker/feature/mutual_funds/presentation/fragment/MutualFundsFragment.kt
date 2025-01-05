@@ -6,7 +6,9 @@ import androidx.compose.ui.platform.ComposeView
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
 import com.sparshchadha.stocktracker.feature.mutual_funds.presentation.compose.MutualFundsScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MutualFundsFragment: BaseFragment(R.layout.fragment_mutual_funds) {
     private lateinit var cvMutualFundsFragment: ComposeView
 

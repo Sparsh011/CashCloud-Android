@@ -16,6 +16,11 @@ val bottomBarBackgroundColor: Color
     get() = if (isSystemInDarkTheme()) Color(0xFF08010F) else secondaryWhite
 
 @Stable
+val searchBarBackgroundColor: Color
+    @Composable
+    get() = if (isSystemInDarkTheme()) Color(0xFF08010F) else secondaryWhite
+
+@Stable
 val bottomBarSelectedIconColor: Color
     @Composable
     get() = if (isSystemInDarkTheme()) secondaryWhite else Color(0xFF0A0115)

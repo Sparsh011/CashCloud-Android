@@ -16,7 +16,9 @@ import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragmen
 import com.sparshchadha.stocktracker.core.theme.primaryAppBackground
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StocksFragment : BaseFragment(R.layout.fragment_stocks) {
     private lateinit var parentActivityNavController: NavController
     private lateinit var cvStocksFragment: ComposeView
