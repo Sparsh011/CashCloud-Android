@@ -55,9 +55,6 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
                         popExit = animBuilder.popExit
                     }
                 }
-                popUpTo(navController.graph.startDestinationId) { saveState = true }
-                launchSingleTop = true
-                restoreState = true
                 arguments = args
             }
         )
