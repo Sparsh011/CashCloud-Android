@@ -1,6 +1,8 @@
 package com.sparshchadha.stocktracker
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.FrameLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
 import com.google.gson.Gson
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.MainHostFragment
+import com.sparshchadha.stocktracker.core.common.extensions.getPhoneThemeAdjustedBackgroundColor
 import com.sparshchadha.stocktracker.core.common.extensions.isDarkThemeOn
 import com.sparshchadha.stocktracker.feature.search.presentation.fragment.SearchFragment
 import com.sparshchadha.stocktracker.feature.stocks.presentation.fragment.StockDetailsFragment
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        setWindowAttributes()
+        setWindowAndContainerAttributes()
 
         setupNavGraph()
     }
@@ -50,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setWindowAttributes() {
+    @SuppressLint("CutPasteId")
+    private fun setWindowAndContainerAttributes() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.app_container)) { _, insets ->
             insets
         }
@@ -59,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             window,
             findViewById(R.id.app_container)
         ).isAppearanceLightStatusBars = !isDarkThemeOn()
+
+        findViewById<FrameLayout>(R.id.app_container).setBackgroundColor(this.getPhoneThemeAdjustedBackgroundColor())
     }
 
     private fun getStocks(): CharSequence {
