@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
@@ -39,15 +40,16 @@ class MainActivity : AppCompatActivity() {
         parentNavController = navHostFragment.navController
 
         parentNavController.graph = parentNavController.createGraph(
-            startDestination = CashCloudNavGraph.MainScreenRoutes.MAIN_HOST_SCREEN
+            startDestination = CashCloudNavGraph.MainHostScreen.route
         ) {
-            fragment<StockDetailsFragment>(CashCloudNavGraph.MainScreenRoutes.STOCK_DETAILS_SCREEN) {
+            fragment<StockDetailsFragment>(CashCloudNavGraph.StockDetailsScreen.route) {
                 label = "Stock Details"
+                argument(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY) { type = NavType.StringType }
             }
-            fragment<MainHostFragment>(CashCloudNavGraph.MainScreenRoutes.MAIN_HOST_SCREEN) {
+            fragment<MainHostFragment>(CashCloudNavGraph.MainHostScreen.route) {
                 label = "Main Host Fragment"
             }
-            fragment<SearchFragment>(CashCloudNavGraph.MainScreenRoutes.SEARCH_SCREEN) {
+            fragment<SearchFragment>(CashCloudNavGraph.SearchScreen.route) {
                 label = "Search Fragment"
             }
         }

@@ -42,7 +42,7 @@ class StocksFragment : BaseFragment(R.layout.fragment_stocks) {
                         .clickable {
                             addFragmentToBackStack(
                                 navController = parentActivityNavController,
-                                route = CashCloudNavGraph.MainScreenRoutes.STOCK_DETAILS_SCREEN
+                                route = CashCloudNavGraph.StockDetailsScreen.createRoute("none")
                             )
                         })
             }

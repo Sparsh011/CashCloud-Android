@@ -12,6 +12,7 @@ import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
 import com.sparshchadha.stocktracker.core.theme.primaryAppBackground
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
+import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +21,8 @@ class StockDetailsFragment: BaseFragment(R.layout.fragment_stock_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        showToast(arguments?.getString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY) ?: "Null mila hai")
 
         cvStockDetailsFragment.setContent {
             Column (

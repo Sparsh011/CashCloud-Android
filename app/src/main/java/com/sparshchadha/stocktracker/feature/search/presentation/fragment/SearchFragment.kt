@@ -14,14 +14,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
+import com.sparshchadha.stocktracker.core.common.utils.CashCloudNavigationAnimationSpec
 import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.Quote
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.SecuritySearchResponse
 import com.sparshchadha.stocktracker.feature.search.domain.entity.SearchHistoryEntity
 import com.sparshchadha.stocktracker.feature.search.presentation.compose.SearchScreen
 import com.sparshchadha.stocktracker.feature.search.presentation.viewmodel.SearchViewModel
+import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -74,6 +77,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
                 securitiesList = securitySearchList,
                 onItemClick = {
                     // navigate to stock details screen with Symbol. At stock details screen, fetch stock details using symbol
+                    val bundle = Bundle()
+                    bundle.putString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY, it)
+                    addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(it), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
                 },
                 showHistory = showHistory.value,
                 onDeleteSearchHistoryItem = {
