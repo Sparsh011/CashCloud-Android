@@ -32,7 +32,7 @@ class StockDetailsFragment: BaseFragment(R.layout.fragment_stock_details) {
                 modifier = Modifier.fillMaxSize()
                     .background(primaryAppBackground)
             ) {
-                Text("Stock details", color = primaryTextColor, fontSize = 200.sp, modifier = Modifier.clickable { addFragmentToBackStack(findNavController(), CashCloudNavGraph.MainHostScreen.route) })
+                Text("Stock detail fragment")
             }
         }
     }

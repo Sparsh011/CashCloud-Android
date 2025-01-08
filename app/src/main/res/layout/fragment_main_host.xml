@@ -8,7 +8,7 @@
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/cv_main_host_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"/>
+        android:layout_height="wrap_content"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
