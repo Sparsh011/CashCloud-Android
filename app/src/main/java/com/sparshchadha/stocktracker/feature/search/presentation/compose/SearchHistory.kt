@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.theme.Dimensions
@@ -38,6 +39,22 @@ fun SearchHistory(
             .fillMaxWidth()
             .padding(Dimensions.smallPadding())
     ) {
+        item {
+            if (searchHistory.isNotEmpty()) {
+                Text(
+                    "Recent Search History",
+                    color = primaryTextColor,
+                    fontSize = FontSizes.mediumFontSize().value.sp,
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(Dimensions.smallPadding()),
+                    textAlign = TextAlign.Start
+                )
+            } else {
+
+            }
+        }
+
+
         items(searchHistory) {
             SearchHistoryItem(
                 item = it,
@@ -55,7 +72,8 @@ private fun SearchHistoryItem(
     item: SearchHistoryEntity
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(vertical = Dimensions.mediumPadding()),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -68,12 +86,13 @@ private fun SearchHistoryItem(
                 .clickable { onDeleteClick(item) }
         )
 
-        Column (
-            modifier = Modifier.weight(0.8f)
+        Column(
+            modifier = Modifier
+                .weight(0.8f)
                 .clickable {
                     onClick(item.symbol)
                 }
-        ){
+        ) {
             Text(
                 text = item.shortName,
                 color = primaryTextColor,
