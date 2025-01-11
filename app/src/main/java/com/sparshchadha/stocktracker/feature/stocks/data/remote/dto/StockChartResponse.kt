@@ -1,5 +1,5 @@
 package com.sparshchadha.stocktracker.feature.stocks.data.remote.dto
 
-data class GetStockChartResponse(
+data class StockChartResponse(
     val chart: Chart
 )

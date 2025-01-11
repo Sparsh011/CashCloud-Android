@@ -103,6 +103,11 @@ object FontSizes {
     }
 
     @Composable
+    fun extraSmallNonScaledFontSize(): TextUnit {
+        return 8.nonScaledSp
+    }
+
+    @Composable
     fun mediumNonScaledFontSize(): TextUnit {
         return 16.nonScaledSp
     }

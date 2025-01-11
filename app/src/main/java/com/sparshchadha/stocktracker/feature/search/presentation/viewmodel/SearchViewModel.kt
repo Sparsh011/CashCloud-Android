@@ -36,6 +36,7 @@ class SearchViewModel @Inject constructor(
 
         debouncingJob = viewModelScope.launch {
             delay(800L) // Delay for debouncing.
+            if (_searchQuery.isBlank()) return@launch
             _securitySearchResponse.value = UiState.Loading // Indicate loading state.
             val result = searchRepository.searchSecurities(_searchQuery) // Perform the search.
             _securitySearchResponse.value = result // Update with the result.
@@ -51,8 +52,10 @@ class SearchViewModel @Inject constructor(
 
     fun updateSearchQueryAndSearchForSecurity(searchQuery: String) {
         if (searchQuery.trim() != this._searchQuery) {
-            this._searchQuery = searchQuery
-            searchSecurities()
+            this._searchQuery = searchQuery // Search query may be blank so we update _searchQuery but don't call the api to prevent bad request with empty query
+            if (searchQuery.isNotBlank()) {
+                searchSecurities()
+            }
         }
     }
 

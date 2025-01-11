@@ -48,4 +48,4 @@ val primaryWhite: Color = Color(255, 255, 255, 255)
 val secondaryWhite: Color = Color(248, 248, 248, 255)
 
 @Stable
-val errorRed: Color = Color(0xFFFF0026)
+val primaryRed: Color = Color(0xFFFF0026)

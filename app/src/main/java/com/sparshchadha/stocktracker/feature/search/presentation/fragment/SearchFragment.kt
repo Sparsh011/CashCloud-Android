@@ -72,11 +72,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
                     searchViewModel.updateSearchQueryAndSearchForSecurity(it)
                 },
                 securitiesList = securitySearchList,
-                onItemClick = {
+                onItemClick = { stockSymbol ->
                     // navigate to stock details screen with Symbol. At stock details screen, fetch stock details using symbol
-                    val bundle = Bundle()
-                    bundle.putString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY, it)
-                    addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(it), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
+                    navigateToStockDetailScreen(stockSymbol = stockSymbol)
                 },
                 showHistory = showHistory.value,
                 onDeleteSearchHistoryItem = {
@@ -91,6 +89,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
         observeSecuritySearchResponse()
         observeSearchHistory()
+    }
+
+    private fun navigateToStockDetailScreen(stockSymbol: String) {
+        val bundle = Bundle()
+        bundle.putString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY, stockSymbol)
+        addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(stockSymbol), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
     }
 
     private fun observeSecuritySearchResponse() {

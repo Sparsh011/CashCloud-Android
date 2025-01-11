@@ -52,10 +52,11 @@ fun SearchHistory(
         item {
             if (searchHistory.isNotEmpty()) {
                 Text(
-                    "Recent Search History",
+                    text = "Recent Search History",
                     color = primaryTextColor,
                     fontSize = FontSizes.mediumFontSize().value.sp,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(Dimensions.smallPadding()),
                     textAlign = TextAlign.Start
                 )
@@ -63,7 +64,8 @@ fun SearchHistory(
                 LottieAnimation(
                     composition = composition,
                     progress = { progress },
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
                         .padding(Dimensions.largePadding())
                 )
             }
@@ -128,9 +130,12 @@ private fun SearchHistoryItem(
 
 
         Icon(
-            ImageVector.vectorResource(R.drawable.ic_arrow_north_east),
+            imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_north_east),
             contentDescription = null,
-            tint = primaryTextColor
+            tint = primaryTextColor,
+            modifier = Modifier.clickable {
+                onClick(item.symbol)
+            }
         )
     }
 }
