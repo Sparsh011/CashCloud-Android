@@ -2,7 +2,6 @@ package com.sparshchadha.stocktracker.feature.search.presentation.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -27,7 +26,6 @@ import com.sparshchadha.stocktracker.feature.search.presentation.viewmodel.Searc
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
@@ -71,8 +69,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
                     if (it.isBlank()) {
                         showHistory.value = true
                     }
-                    searchViewModel.updateSearchQuery(it)
-                    searchViewModel.searchSecurities()
+                    searchViewModel.updateSearchQueryAndSearchForSecurity(it)
                 },
                 securitiesList = securitySearchList,
                 onItemClick = {

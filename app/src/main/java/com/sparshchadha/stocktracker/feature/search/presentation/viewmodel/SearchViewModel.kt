@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
 
     private var debouncingJob: Job? = null
 
-    fun searchSecurities() {
+    private fun searchSecurities() {
         debouncingJob?.cancel() // Cancel any ongoing debouncing job.
 
         debouncingJob = viewModelScope.launch {
@@ -49,8 +49,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchQuery(searchQuery: String) {
-        this._searchQuery = searchQuery
+    fun updateSearchQueryAndSearchForSecurity(searchQuery: String) {
+        if (searchQuery.trim() != this._searchQuery) {
+            this._searchQuery = searchQuery
+            searchSecurities()
+        }
     }
 
     fun insertInSearchHistory(quote: Quote) {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +24,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.theme.Dimensions
 import com.sparshchadha.stocktracker.core.theme.FontSizes
@@ -34,6 +40,10 @@ fun SearchHistory(
     onDeleteClick: (SearchHistoryEntity) -> Unit,
     onClick: (String) -> Unit
 ) {
+
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.stocks))
+    val progress by animateLottieCompositionAsState(composition)
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +60,12 @@ fun SearchHistory(
                     textAlign = TextAlign.Start
                 )
             } else {
-
+                LottieAnimation(
+                    composition = composition,
+                    progress = { progress },
+                    modifier = Modifier.fillMaxSize()
+                        .padding(Dimensions.largePadding())
+                )
             }
         }
 
