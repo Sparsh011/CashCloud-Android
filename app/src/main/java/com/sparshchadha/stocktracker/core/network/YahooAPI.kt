@@ -21,6 +21,7 @@ interface YahooAPI {
         @Query("period1") startFromEpoch: Long,
         @Query("period2") endEpoch: Long,
         @Query("lang") language: String = "en-US",
+        @Query("interval") interval: String,
         @Query("includePrePost") includePrePost: Boolean = true
     ): Response<StockChartResponse>
 

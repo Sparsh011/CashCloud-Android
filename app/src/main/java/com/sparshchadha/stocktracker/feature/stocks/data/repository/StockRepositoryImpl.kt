@@ -15,13 +15,15 @@ class StockRepositoryImpl(
     override suspend fun getStockChartDetails(
         identifier: String,
         startFromEpoch: Long,
-        endEpoch: Long
+        endEpoch: Long,
+        interval: String
     ): UiState<StockChartResponse> {
         return safeApiCall {
             yahooAPI.getStockChart(
-                identifier,
-                startFromEpoch,
-                endEpoch
+                symbol = identifier,
+                startFromEpoch = startFromEpoch,
+                endEpoch = endEpoch,
+                interval = interval
             )
         }.toUiState()
     }

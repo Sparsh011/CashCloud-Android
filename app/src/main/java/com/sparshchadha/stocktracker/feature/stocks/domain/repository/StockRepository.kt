@@ -8,7 +8,8 @@ interface StockRepository {
     suspend fun getStockChartDetails(
         identifier: String,
         startFromEpoch: Long,
-        endEpoch: Long
+        endEpoch: Long,
+        interval: String
     ): UiState<StockChartResponse>
 
     suspend fun getStockFundamentals(

@@ -1,7 +1,5 @@
 package com.sparshchadha.stocktracker.feature.stocks.presentation.viewmodel
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sparshchadha.stocktracker.core.common.utils.EpochTimeHelper
@@ -21,8 +19,6 @@ import javax.inject.Inject
 class StockViewModel @Inject constructor(
     private val stockRepository: StockRepository
 ) : ViewModel() {
-//    private var startFromEpoch: Long = System.currentTimeMillis() - 24 * 60 * 60 * 1000
-//    private var endEpoch: Long = System.currentTimeMillis()
 
     private val _stockChartData = MutableStateFlow<UiState<StockChartResponse>?>(null)
     val stockChartData = _stockChartData.asStateFlow()
@@ -33,15 +29,6 @@ class StockViewModel @Inject constructor(
     private val _stockFundamentalsData = MutableStateFlow<UiState<StockFundamentalsResponse>?>(null)
     val stockFundamentalsData = _stockFundamentalsData.asStateFlow()
 
-//    fun setStartFromEpoch(startFromEpoch: Long) {
-//        this.startFromEpoch = startFromEpoch
-//    }
-//
-//    fun setEndEpoch(endEpoch: Long) {
-//        this.endEpoch = endEpoch
-//    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getStockDetails(identifier: String, exchange: String) {
         _stockChartData.value = UiState.Loading
         _stockFundamentalsData.value = UiState.Loading
@@ -55,8 +42,9 @@ class StockViewModel @Inject constructor(
             val stockChartData = async {
                 stockRepository.getStockChartDetails(
                     identifier,
-                    startAndEndTimeEpoch.first,
-                    startAndEndTimeEpoch.second
+                    -1,
+                    -1,
+                    getInterval()
                 )
             }
 
@@ -70,6 +58,46 @@ class StockViewModel @Inject constructor(
 
             _stockChartData.value = stockChartData.await()
             _stockFundamentalsData.value = stockFundamentalsData.await()
+        }
+    }
+
+    fun getStockDetailsFromInterval(identifier: String) {
+        val startEpoch = EpochTimeHelper.subtractTimeRangeFromEpoch(_selectedTimeRange.value)
+
+        viewModelScope.launch {
+            _stockChartData.value = stockRepository.getStockChartDetails(
+                identifier = identifier,
+                startFromEpoch = startEpoch,
+                endEpoch = System.currentTimeMillis(),
+                interval = getInterval()
+            )
+        }
+    }
+
+    private fun getInterval(): String {
+//        Valid intervals: [1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo]"
+        return when (this._selectedTimeRange.value) {
+            TimeRange.DAY_1 -> {
+                "1m"
+            }
+            TimeRange.WEEK_1 -> {
+                "1m"
+            }
+            TimeRange.MONTH_1 -> {
+                "1d"
+            }
+            TimeRange.YEAR_1 -> {
+                "1d"
+            }
+            TimeRange.YEAR_2 -> {
+                "5d"
+            }
+            TimeRange.YEAR_5 -> {
+                "1wk"
+            }
+            TimeRange.ALL -> {
+                "1mo"
+            }
         }
     }
 

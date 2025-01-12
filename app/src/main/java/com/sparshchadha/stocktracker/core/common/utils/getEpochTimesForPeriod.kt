@@ -23,6 +23,7 @@ object EpochTimeHelper {
             "1W" -> currentTime.minusWeeks(1)
             "1M" -> currentTime.minusMonths(1)
             "1Y" -> currentTime.minusYears(1)
+            "2Y" -> currentTime.minusYears(2)
             "5Y" -> currentTime.minusYears(5)
             "ALL" -> {
                 if (ipoTimestamp != null) {
@@ -99,4 +100,40 @@ object EpochTimeHelper {
         val end: LocalTime,
         val timezone: String
     )
+
+    fun subtractTimeRangeFromEpoch(timeRange: TimeRange): Long {
+        val date =
+            when (timeRange) {
+                TimeRange.DAY_1 -> {
+                    LocalDate.now().minusDays(1)
+                }
+
+                TimeRange.WEEK_1 -> {
+                    LocalDate.now().minusWeeks(1)
+                }
+
+                TimeRange.MONTH_1 -> {
+                    LocalDate.now().minusMonths(1)
+                }
+
+                TimeRange.YEAR_1 -> {
+                    LocalDate.now().minusYears(1)
+                }
+
+                TimeRange.YEAR_2 -> {
+                    LocalDate.now().minusYears(2)
+                }
+
+                TimeRange.YEAR_5 -> {
+                    LocalDate.now().minusYears(5)
+                }
+
+                TimeRange.ALL -> {
+                    LocalDate.now().minusYears(LocalDate.MAX.year.toLong())
+                }
+            }
+        val zoneId = ZoneId.systemDefault()
+        val newEpoch = date.atStartOfDay(zoneId).toEpochSecond()
+        return newEpoch
+    }
 }

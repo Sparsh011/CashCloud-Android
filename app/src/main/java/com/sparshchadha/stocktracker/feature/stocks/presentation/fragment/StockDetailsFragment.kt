@@ -64,6 +64,7 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
                 },
                 onTimeUnitChange = {
                     stockViewModel.updateSelectedTimeRange(it)
+                    stockViewModel.getStockDetailsFromInterval(identifier = symbol)
                 },
                 selectedTimeRange = selectedTimeRange.value
             )
