@@ -30,6 +30,7 @@ class StockViewModel @Inject constructor(
 //    }
 
     fun getStockChart(identifier: String) {
+        _stockDetail.value = UiState.Loading
         viewModelScope.launch {
             _stockDetail.value = stockRepository.fetchStockDetailsIdentifier(identifier,
 //                startFromEpoch, endEpoch

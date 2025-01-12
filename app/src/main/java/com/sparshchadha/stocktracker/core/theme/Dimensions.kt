@@ -61,8 +61,8 @@ object Dimensions {
     }
 
     @Composable
-    fun errorIconSize(): Dp {
-        return dimensionResource(id = R.dimen.error_icon)
+    fun shimmerChartHeight(): Dp {
+        return dimensionResource(id = R.dimen.shimmer_chart_height)
     }
 }
 
