@@ -51,8 +51,8 @@ object Dimensions {
     }
 
     @Composable
-    fun profilePicSize(): Dp {
-        return dimensionResource(id = R.dimen.profile_pic_size)
+    fun errorIconSize(): Dp {
+        return dimensionResource(id = R.dimen.error_icon_size)
     }
 
     @Composable
@@ -61,8 +61,8 @@ object Dimensions {
     }
 
     @Composable
-    fun errorIconSize(): Dp {
-        return dimensionResource(id = R.dimen.error_icon)
+    fun shimmerChartHeight(): Dp {
+        return dimensionResource(id = R.dimen.shimmer_chart_height)
     }
 }
 
@@ -100,6 +100,11 @@ object FontSizes {
     @Composable
     fun smallNonScaledFontSize(): TextUnit {
         return 12.nonScaledSp
+    }
+
+    @Composable
+    fun extraSmallNonScaledFontSize(): TextUnit {
+        return 8.nonScaledSp
     }
 
     @Composable

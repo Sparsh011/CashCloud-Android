@@ -2,7 +2,6 @@ package com.sparshchadha.stocktracker.feature.search.presentation.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -14,17 +13,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
+import com.sparshchadha.stocktracker.core.common.utils.CashCloudNavigationAnimationSpec
 import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.Quote
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.SecuritySearchResponse
 import com.sparshchadha.stocktracker.feature.search.domain.entity.SearchHistoryEntity
 import com.sparshchadha.stocktracker.feature.search.presentation.compose.SearchScreen
+import com.sparshchadha.stocktracker.feature.search.presentation.compose.stockExchangeToCurrencyMap
 import com.sparshchadha.stocktracker.feature.search.presentation.viewmodel.SearchViewModel
+import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import okhttp3.internal.connection.Exchange
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
@@ -68,12 +71,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
                     if (it.isBlank()) {
                         showHistory.value = true
                     }
-                    searchViewModel.updateSearchQuery(it)
-                    searchViewModel.searchSecurities()
+                    searchViewModel.updateSearchQueryAndSearchForSecurity(it)
                 },
                 securitiesList = securitySearchList,
-                onItemClick = {
+                onItemClick = { stockSymbol, exchangeDisp ->
                     // navigate to stock details screen with Symbol. At stock details screen, fetch stock details using symbol
+                    navigateToStockDetailScreen(stockSymbol = stockSymbol, exchange = exchangeDisp)
                 },
                 showHistory = showHistory.value,
                 onDeleteSearchHistoryItem = {
@@ -88,6 +91,13 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
 
         observeSecuritySearchResponse()
         observeSearchHistory()
+    }
+
+    private fun navigateToStockDetailScreen(stockSymbol: String, exchange: String) {
+        val bundle = Bundle()
+        bundle.putString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY, stockSymbol)
+        bundle.putString(CashCloudNavGraph.StockDetailsScreen.EXCHANGE_KEY, exchange)
+        addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(stockSymbol, exchange), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
     }
 
     private fun observeSecuritySearchResponse() {

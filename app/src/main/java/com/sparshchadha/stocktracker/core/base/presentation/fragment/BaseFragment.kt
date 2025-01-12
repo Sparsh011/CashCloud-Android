@@ -3,15 +3,9 @@ package com.sparshchadha.stocktracker.core.base.presentation.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.AnimBuilder
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
-import androidx.transition.ChangeBounds
-import androidx.transition.ChangeTransform
-import androidx.transition.Fade
-import androidx.transition.TransitionSet
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.common.utils.CashCloudNavigationAnimationSpec
 
@@ -53,21 +47,20 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
             route = route,
             builder = {
                 anim {
-                    val animBuilder = getNavigationFromNavigationSpec(navigationAnimationSpec)
-                    enter = animBuilder.enter
-                    exit = animBuilder.exit
-                    popEnter = animBuilder.popEnter
-                    popExit = animBuilder.popExit
+                    val animBuilder = getNavigationAnimationSpec(navigationAnimationSpec)
+                    animBuilder?.let {
+                        enter = animBuilder.enter
+                        exit = animBuilder.exit
+                        popEnter = animBuilder.popEnter
+                        popExit = animBuilder.popExit
+                    }
                 }
-                popUpTo(navController.graph.startDestinationId) { saveState = true }
-                launchSingleTop = true
-                restoreState = true
                 arguments = args
             }
         )
     }
 
-    private fun getNavigationFromNavigationSpec(animationSpec: CashCloudNavigationAnimationSpec): AnimBuilder {
+    private fun getNavigationAnimationSpec(animationSpec: CashCloudNavigationAnimationSpec): AnimBuilder? {
         when (animationSpec) {
             CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION -> {
                 return AnimBuilder().apply {
@@ -78,7 +71,7 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
                 }
             }
 
-            CashCloudNavigationAnimationSpec.EXPAND_FROM_TOUCH_POINT -> {
+            CashCloudNavigationAnimationSpec.EXPAND_FROM_TOP_RIGHT -> {
                 return AnimBuilder()
                     .apply {
                         enter = R.anim.expand
@@ -86,6 +79,10 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
                         popEnter = R.anim.rise_up
                         popExit = R.anim.shrink
                     }
+            }
+
+            CashCloudNavigationAnimationSpec.NONE -> {
+                return null
             }
         }
     }

@@ -1,14 +1,17 @@
 package com.sparshchadha.stocktracker.navigation
 
-object CashCloudNavGraph {
-    object BottomBarScreenRoutes {
-        const val STOCKS_SCREEN = "stocks_screen"
-        const val MUTUAL_FUNDS_SCREEN = "mutual_funds_screen"
-    }
+sealed class CashCloudNavGraph(open val route: String) {
+    data object StocksScreen : CashCloudNavGraph("stocks_screen")
+    data object MutualFundsScreen : CashCloudNavGraph("mutual_funds_screen")
+    data object SearchScreen : CashCloudNavGraph("search_screen")
+    data object MainHostScreen : CashCloudNavGraph("home_screen")
 
-    object MainScreenRoutes {
-        const val SEARCH_SCREEN = "search_screen"
-        const val STOCK_DETAILS_SCREEN = "stock_details_screen"
-        const val MAIN_HOST_SCREEN = "home_screen"
+    data object StockDetailsScreen : CashCloudNavGraph("stock_details_screen") {
+        const val SYMBOL_KEY = "stockSymbol"
+        const val EXCHANGE_KEY = "stockExchange"
+        private const val BASE_ROUTE = "stock_details_screen"
+        override val route = "$BASE_ROUTE/{$SYMBOL_KEY}/{$EXCHANGE_KEY}"
+
+        fun createRoute(symbol: String, exchange: String) = "$BASE_ROUTE/$symbol/$exchange"
     }
 }

@@ -3,7 +3,6 @@ package com.sparshchadha.stocktracker.feature.stocks.presentation.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -15,7 +14,6 @@ import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
 import com.sparshchadha.stocktracker.core.theme.primaryAppBackground
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
-import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,16 +33,9 @@ class StocksFragment : BaseFragment(R.layout.fragment_stocks) {
                     .background(primaryAppBackground)
             ) {
                 Text(
-                    "Stock Screen",
+                    text = "Stock Screen",
                     color = primaryTextColor,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            addFragmentToBackStack(
-                                navController = parentActivityNavController,
-                                route = CashCloudNavGraph.MainScreenRoutes.STOCK_DETAILS_SCREEN
-                            )
-                        })
+                )
             }
         }
     }

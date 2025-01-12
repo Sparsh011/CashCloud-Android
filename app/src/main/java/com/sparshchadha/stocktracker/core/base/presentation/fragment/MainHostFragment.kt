@@ -38,7 +38,7 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     private lateinit var bbItemStocks: ComposeView
     private lateinit var bbItemMutualFunds: ComposeView
     private var selectedBottomBarItem =
-        mutableStateOf(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+        mutableStateOf(CashCloudNavGraph.SearchScreen.route)
     private lateinit var cvTopBar: ComposeView
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -49,7 +49,7 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         selectedBottomBarItem.value = savedInstanceState?.getString("SELECTED_BOTTOM_BAR_ICON")
-            ?: CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+            ?: CashCloudNavGraph.StocksScreen.route
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +63,11 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
     private fun setupTopBar() {
         cvTopBar.setContent {
             MainHostFragmentTopBar(onSearchIconClick = {
-                addFragmentToBackStack(findNavController(), CashCloudNavGraph.MainScreenRoutes.SEARCH_SCREEN, CashCloudNavigationAnimationSpec.EXPAND_FROM_TOUCH_POINT)
+                addFragmentToBackStack(
+                    findNavController(),
+                    CashCloudNavGraph.SearchScreen.route,
+                    CashCloudNavigationAnimationSpec.EXPAND_FROM_TOP_RIGHT
+                )
             })
         }
     }
@@ -84,11 +88,11 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
 
     private fun createNavGraph(navController: NavController): NavGraph {
         return navController.createGraph(
-            startDestination = CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
+            startDestination = CashCloudNavGraph.StocksScreen.route
         ) {
-            fragment<StocksFragment>(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+            fragment<StocksFragment>(CashCloudNavGraph.StocksScreen.route)
 
-            fragment<MutualFundsFragment>(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+            fragment<MutualFundsFragment>(CashCloudNavGraph.MutualFundsScreen.route)
         }
     }
 
@@ -114,8 +118,8 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                     .fillMaxWidth()
                     .clickable {
                         selectedBottomBarItem.value =
-                            CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN
-                        navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN)
+                            CashCloudNavGraph.StocksScreen.route
+                        navigateIfNotCurrent(CashCloudNavGraph.StocksScreen.route)
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -123,12 +127,12 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_stocks),
                     contentDescription = null,
-                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.StocksScreen.route) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
                 )
 
                 Text(
                     text = "Stocks",
-                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.STOCKS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.StocksScreen.route) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
                 )
             }
         }
@@ -140,8 +144,10 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                     .fillMaxWidth()
                     .clickable {
                         selectedBottomBarItem.value =
-                            CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN
-                        navigateIfNotCurrent(CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN)
+                            CashCloudNavGraph.MutualFundsScreen.route
+                        navigateIfNotCurrent(
+                            CashCloudNavGraph.MutualFundsScreen.route
+                        )
                     },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -149,12 +155,12 @@ class MainHostFragment : BaseFragment(R.layout.fragment_main_host) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_mutual_fund),
                     contentDescription = null,
-                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                    tint = if (selectedBottomBarItem.value == CashCloudNavGraph.MutualFundsScreen.route) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
                 )
 
                 Text(
                     text = "Mutual Funds",
-                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.BottomBarScreenRoutes.MUTUAL_FUNDS_SCREEN) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
+                    color = if (selectedBottomBarItem.value == CashCloudNavGraph.MutualFundsScreen.route) bottomBarSelectedIconColor else bottomBarUnselectedIconColor
                 )
             }
         }

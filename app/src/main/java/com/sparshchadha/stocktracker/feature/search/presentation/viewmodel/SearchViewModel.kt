@@ -31,11 +31,12 @@ class SearchViewModel @Inject constructor(
 
     private var debouncingJob: Job? = null
 
-    fun searchSecurities() {
+    private fun searchSecurities() {
         debouncingJob?.cancel() // Cancel any ongoing debouncing job.
 
         debouncingJob = viewModelScope.launch {
             delay(800L) // Delay for debouncing.
+            if (_searchQuery.isBlank()) return@launch
             _securitySearchResponse.value = UiState.Loading // Indicate loading state.
             val result = searchRepository.searchSecurities(_searchQuery) // Perform the search.
             _securitySearchResponse.value = result // Update with the result.
@@ -49,8 +50,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchQuery(searchQuery: String) {
-        this._searchQuery = searchQuery
+    fun updateSearchQueryAndSearchForSecurity(searchQuery: String) {
+        if (searchQuery.trim() != this._searchQuery) {
+            this._searchQuery = searchQuery // Search query may be blank so we update _searchQuery but don't call the api to prevent bad request with empty query
+            if (searchQuery.isNotBlank()) {
+                searchSecurities()
+            }
+        }
     }
 
     fun insertInSearchHistory(quote: Quote) {
@@ -62,7 +68,7 @@ class SearchViewModel @Inject constructor(
                         shortName = quote.shortname,
                         searchedAt = System.currentTimeMillis(),
                         exchDisp = quote.exchDisp,
-                        exchange = quote.exchange
+                        exchange = quote.exchange,
                     )
                 )
             } catch (_: Exception) {
