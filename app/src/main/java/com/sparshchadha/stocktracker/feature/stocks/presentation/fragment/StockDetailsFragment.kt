@@ -73,7 +73,10 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
                         stockViewModel.getStockDetailsFromInterval(identifier = symbol)
                     }
                 },
-                selectedTimeRange = selectedTimeRange.value
+                selectedTimeRange = selectedTimeRange.value,
+                onRetry = {
+                    stockViewModel.getStockDetails(symbol, exchange)
+                }
             )
         }
 

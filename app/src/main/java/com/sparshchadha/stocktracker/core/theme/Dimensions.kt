@@ -51,8 +51,8 @@ object Dimensions {
     }
 
     @Composable
-    fun profilePicSize(): Dp {
-        return dimensionResource(id = R.dimen.profile_pic_size)
+    fun errorIconSize(): Dp {
+        return dimensionResource(id = R.dimen.error_icon_size)
     }
 
     @Composable

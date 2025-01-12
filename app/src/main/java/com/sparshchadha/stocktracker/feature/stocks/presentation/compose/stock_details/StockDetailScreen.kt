@@ -23,7 +23,8 @@ fun StockDetailScreen(
     identifier: String,
     onBackPress: () -> Unit,
     onTimeUnitChange: (TimeRange) -> Unit,
-    selectedTimeRange: TimeRange
+    selectedTimeRange: TimeRange,
+    onRetry: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -41,8 +42,12 @@ fun StockDetailScreen(
                 StockDetails(stockDetails.data, onTimeUnitChange, selectedTimeRange)
             }
 
+            is UiState.Error -> {
+                ErrorScreen(stockDetails.error, onRetryClick = onRetry)
+            }
+
             else -> {
-                // Show error
+                ErrorScreen("Something Went Wrong! Could not fetch data, please try again.", onRetryClick = onRetry)
             }
         }
     }
