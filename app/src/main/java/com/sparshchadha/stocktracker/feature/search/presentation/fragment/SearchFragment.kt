@@ -22,10 +22,12 @@ import com.sparshchadha.stocktracker.feature.search.data.remote.dto.Quote
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.SecuritySearchResponse
 import com.sparshchadha.stocktracker.feature.search.domain.entity.SearchHistoryEntity
 import com.sparshchadha.stocktracker.feature.search.presentation.compose.SearchScreen
+import com.sparshchadha.stocktracker.feature.search.presentation.compose.stockExchangeToCurrencyMap
 import com.sparshchadha.stocktracker.feature.search.presentation.viewmodel.SearchViewModel
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import okhttp3.internal.connection.Exchange
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment(R.layout.fragment_search) {
@@ -72,9 +74,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
                     searchViewModel.updateSearchQueryAndSearchForSecurity(it)
                 },
                 securitiesList = securitySearchList,
-                onItemClick = { stockSymbol ->
+                onItemClick = { stockSymbol, exchangeDisp ->
                     // navigate to stock details screen with Symbol. At stock details screen, fetch stock details using symbol
-                    navigateToStockDetailScreen(stockSymbol = stockSymbol)
+                    navigateToStockDetailScreen(stockSymbol = stockSymbol, exchange = exchangeDisp)
                 },
                 showHistory = showHistory.value,
                 onDeleteSearchHistoryItem = {
@@ -91,10 +93,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search) {
         observeSearchHistory()
     }
 
-    private fun navigateToStockDetailScreen(stockSymbol: String) {
+    private fun navigateToStockDetailScreen(stockSymbol: String, exchange: String) {
         val bundle = Bundle()
         bundle.putString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY, stockSymbol)
-        addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(stockSymbol), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
+        bundle.putString(CashCloudNavGraph.StockDetailsScreen.EXCHANGE_KEY, exchange)
+        addFragmentToBackStack(findNavController(), CashCloudNavGraph.StockDetailsScreen.createRoute(stockSymbol, exchange), navigationAnimationSpec = CashCloudNavigationAnimationSpec.PUSH_BACK_CURRENT_SLIDE_IN_DESTINATION, args = bundle)
     }
 
     private fun observeSecuritySearchResponse() {

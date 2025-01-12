@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sparshchadha.stocktracker.R
 import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragment
+import com.sparshchadha.stocktracker.core.common.utils.TimeRange
 import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockChartResponse
 import com.sparshchadha.stocktracker.feature.stocks.presentation.compose.stock_details.StockDetailScreen
@@ -27,48 +28,67 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
     private var hasFetchedStockDetailsOnFragmentCreation = false
 
     private var stockDetails = mutableStateOf<UiState<StockChartResponse>?>(null)
+    private var selectedTimeRange = mutableStateOf(TimeRange.DAY_1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        hasFetchedStockDetailsOnFragmentCreation = savedInstanceState?.getBoolean("hasFetchedStockDetailsOnFragmentCreation") ?: false
+        hasFetchedStockDetailsOnFragmentCreation =
+            savedInstanceState?.getBoolean("hasFetchedStockDetailsOnFragmentCreation") ?: false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean("hasFetchedStockDetailsOnFragmentCreation", hasFetchedStockDetailsOnFragmentCreation)
+        outState.putBoolean(
+            "hasFetchedStockDetailsOnFragmentCreation",
+            hasFetchedStockDetailsOnFragmentCreation
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY)?.let {
-            if (!hasFetchedStockDetailsOnFragmentCreation) {
-                hasFetchedStockDetailsOnFragmentCreation = true
-                stockViewModel.getStockChart(it)
-            }
+        val symbol = arguments?.getString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY) ?: ""
+        val exchange = arguments?.getString(CashCloudNavGraph.StockDetailsScreen.EXCHANGE_KEY) ?: ""
+        if (!hasFetchedStockDetailsOnFragmentCreation) {
+            hasFetchedStockDetailsOnFragmentCreation = true
+            stockViewModel.getStockDetails(symbol, exchange)
         }
 
         cvStockDetailsFragment.setContent {
             StockDetailScreen(
                 stockDetails = stockDetails.value,
-                identifier = arguments?.getString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY) ?: "",
+                identifier = arguments?.getString(CashCloudNavGraph.StockDetailsScreen.SYMBOL_KEY)
+                    ?: "",
                 onBackPress = {
                     popBackStack()
                 },
                 onTimeUnitChange = {
-
-                }
+                    stockViewModel.updateSelectedTimeRange(it)
+                },
+                selectedTimeRange = selectedTimeRange.value
             )
         }
 
         observeStock()
+        observeTimeRangeSelected()
     }
 
     private fun observeStock() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                stockViewModel.stockDetail.collectLatest {
+                stockViewModel.stockChartData.collectLatest {
                     stockDetails.value = it
+                }
+            }
+        }
+    }
+
+
+    private fun observeTimeRangeSelected() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                stockViewModel.selectedTimeRange.collectLatest {
+                    selectedTimeRange.value = it
                 }
             }
         }

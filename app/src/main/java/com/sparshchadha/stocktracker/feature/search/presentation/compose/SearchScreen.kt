@@ -19,7 +19,7 @@ fun SearchScreen(
     showHistory: Boolean,
     searchHistory: List<SearchHistoryEntity>,
     onDeleteSearchHistoryItem: (SearchHistoryEntity) -> Unit,
-    onItemClick: (symbol: String) -> Unit,
+    onItemClick: (symbol: String, exchangeDisp: String) -> Unit,
     onUpdateSearchHistory: (Quote) -> Unit
 ) {
     Column(
@@ -31,7 +31,7 @@ fun SearchScreen(
         SecuritiesSearchBar(onSearch = onSearch)
 
         if (showHistory) {
-            SearchHistory(searchHistory = searchHistory, onDeleteClick = onDeleteSearchHistoryItem, onClick = onItemClick)
+            SearchHistory(searchHistory = searchHistory, onDeleteClick = onDeleteSearchHistoryItem, onItemClick = onItemClick)
         } else if (shouldShowLoader) {
             CircularProgressIndicator()
         } else {

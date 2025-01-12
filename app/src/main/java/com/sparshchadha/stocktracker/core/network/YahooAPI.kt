@@ -2,6 +2,7 @@ package com.sparshchadha.stocktracker.core.network
 
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.SecuritySearchResponse
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockChartResponse
+import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockFundamentalsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,11 +18,20 @@ interface YahooAPI {
     @GET("v8/finance/chart/{symbol}")
     suspend fun getStockChart(
         @Path("symbol") symbol: String,
-//        @Query("period1") startFromEpoch: Long,
-//        @Query("period2") endEpoch: Long,
+        @Query("period1") startFromEpoch: Long,
+        @Query("period2") endEpoch: Long,
         @Query("lang") language: String = "en-US",
         @Query("includePrePost") includePrePost: Boolean = true
     ): Response<StockChartResponse>
+
+
+    @GET("ws/fundamentals-timeseries/v1/finance/timeseries/{symbol}")
+    suspend fun getStockFundamentals(
+        @Path("symbol") symbol: String,
+        @Query("period1") startFromEpoch: Long,
+        @Query("period2") endEpoch: Long,
+        @Query("lang") language: String = "en-US",
+    ): Response<StockFundamentalsResponse>
 
     companion object {
         const val BASE_URL = "https://query1.finance.yahoo.com"

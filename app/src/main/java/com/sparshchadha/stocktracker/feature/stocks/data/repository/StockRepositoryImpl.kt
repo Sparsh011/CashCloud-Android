@@ -5,22 +5,37 @@ import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.core.common.utils.toUiState
 import com.sparshchadha.stocktracker.core.network.YahooAPI
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockChartResponse
+import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockFundamentalsResponse
 import com.sparshchadha.stocktracker.feature.stocks.domain.repository.StockRepository
 
 class StockRepositoryImpl(
     private val yahooAPI: YahooAPI
 ) : StockRepository, BaseRepository() {
 
-    override suspend fun fetchStockDetailsIdentifier(
+    override suspend fun getStockChartDetails(
         identifier: String,
-//        startFromEpoch: Long,
-//        endEpoch: Long
+        startFromEpoch: Long,
+        endEpoch: Long
     ): UiState<StockChartResponse> {
         return safeApiCall {
             yahooAPI.getStockChart(
                 identifier,
-//                startFromEpoch,
-//                endEpoch
+                startFromEpoch,
+                endEpoch
+            )
+        }.toUiState()
+    }
+
+    override suspend fun getStockFundamentals(
+        identifier: String,
+        startFromEpoch: Long,
+        endEpoch: Long
+    ): UiState<StockFundamentalsResponse> {
+        return safeApiCall {
+            yahooAPI.getStockFundamentals(
+                symbol = identifier,
+                startFromEpoch = startFromEpoch,
+                endEpoch = endEpoch,
             )
         }.toUiState()
     }

@@ -68,7 +68,7 @@ class SearchViewModel @Inject constructor(
                         shortName = quote.shortname,
                         searchedAt = System.currentTimeMillis(),
                         exchDisp = quote.exchDisp,
-                        exchange = quote.exchange
+                        exchange = quote.exchange,
                     )
                 )
             } catch (_: Exception) {

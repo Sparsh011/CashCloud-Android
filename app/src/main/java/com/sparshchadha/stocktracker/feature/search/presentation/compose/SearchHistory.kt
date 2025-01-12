@@ -38,7 +38,7 @@ import com.sparshchadha.stocktracker.feature.search.domain.entity.SearchHistoryE
 fun SearchHistory(
     searchHistory: List<SearchHistoryEntity>,
     onDeleteClick: (SearchHistoryEntity) -> Unit,
-    onClick: (String) -> Unit
+    onItemClick: (symbol: String, exchange: String) -> Unit,
 ) {
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.stocks))
@@ -76,7 +76,7 @@ fun SearchHistory(
             SearchHistoryItem(
                 item = it,
                 onDeleteClick = onDeleteClick,
-                onClick = onClick
+                onItemClick = onItemClick
             )
         }
     }
@@ -85,7 +85,7 @@ fun SearchHistory(
 @Composable
 private fun SearchHistoryItem(
     onDeleteClick: (SearchHistoryEntity) -> Unit,
-    onClick: (String) -> Unit,
+    onItemClick: (symbol: String, exchange: String) -> Unit,
     item: SearchHistoryEntity
 ) {
     Row(
@@ -107,7 +107,7 @@ private fun SearchHistoryItem(
             modifier = Modifier
                 .weight(0.8f)
                 .clickable {
-                    onClick(item.symbol)
+                    onItemClick(item.symbol, item.exchDisp)
                 }
         ) {
             Text(
@@ -134,7 +134,7 @@ private fun SearchHistoryItem(
             contentDescription = null,
             tint = primaryTextColor,
             modifier = Modifier.clickable {
-                onClick(item.symbol)
+                onItemClick(item.symbol, item.exchange)
             }
         )
     }

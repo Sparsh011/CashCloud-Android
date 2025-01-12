@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +29,7 @@ import com.sparshchadha.stocktracker.feature.search.data.remote.dto.Quote
 @Composable
 fun SecuritiesSearchResult(
     securitiesList: List<Quote>,
-    onItemClick: (String) -> Unit,
+    onItemClick: (symbol: String, exchangeDisp: String) -> Unit,
     onUpdateSearchHistory: (Quote) -> Unit
 ) {
 
@@ -58,14 +56,14 @@ fun SecuritiesSearchResult(
 @Composable
 private fun SecurityItem(
     quote: Quote,
-    onItemClick: (String) -> Unit,
+    onItemClick: (symbol: String, exchangeDisp: String) -> Unit,
     onUpdateSearchHistory: (Quote) -> Unit
 ) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onItemClick(quote.symbol)
+                onItemClick(quote.symbol, quote.exchDisp)
                 onUpdateSearchHistory(quote)
             }
             .padding(vertical = Dimensions.mediumPadding()),

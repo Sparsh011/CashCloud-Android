@@ -1,11 +1,17 @@
 package com.sparshchadha.stocktracker.feature.stocks.presentation.viewmodel
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sparshchadha.stocktracker.core.common.utils.EpochTimeHelper
+import com.sparshchadha.stocktracker.core.common.utils.TimeRange
 import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockChartResponse
+import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockFundamentalsResponse
 import com.sparshchadha.stocktracker.feature.stocks.domain.repository.StockRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -18,8 +24,14 @@ class StockViewModel @Inject constructor(
 //    private var startFromEpoch: Long = System.currentTimeMillis() - 24 * 60 * 60 * 1000
 //    private var endEpoch: Long = System.currentTimeMillis()
 
-    private val _stockDetail = MutableStateFlow<UiState<StockChartResponse>?>(null)
-    val stockDetail = _stockDetail.asStateFlow()
+    private val _stockChartData = MutableStateFlow<UiState<StockChartResponse>?>(null)
+    val stockChartData = _stockChartData.asStateFlow()
+
+    private val _selectedTimeRange = MutableStateFlow(TimeRange.DAY_1)
+    val selectedTimeRange = _selectedTimeRange.asStateFlow()
+
+    private val _stockFundamentalsData = MutableStateFlow<UiState<StockFundamentalsResponse>?>(null)
+    val stockFundamentalsData = _stockFundamentalsData.asStateFlow()
 
 //    fun setStartFromEpoch(startFromEpoch: Long) {
 //        this.startFromEpoch = startFromEpoch
@@ -29,12 +41,41 @@ class StockViewModel @Inject constructor(
 //        this.endEpoch = endEpoch
 //    }
 
-    fun getStockChart(identifier: String) {
-        _stockDetail.value = UiState.Loading
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getStockDetails(identifier: String, exchange: String) {
+        _stockChartData.value = UiState.Loading
+        _stockFundamentalsData.value = UiState.Loading
+
         viewModelScope.launch {
-            _stockDetail.value = stockRepository.fetchStockDetailsIdentifier(identifier,
-//                startFromEpoch, endEpoch
+            val startAndEndTimeEpoch = EpochTimeHelper.getEpochTimesForPeriod(
+                exchange = exchange,
+                period = TimeRange.DAY_1.dateStr
             )
+
+            val stockChartData = async {
+                stockRepository.getStockChartDetails(
+                    identifier,
+                    startAndEndTimeEpoch.first,
+                    startAndEndTimeEpoch.second
+                )
+            }
+
+            val stockFundamentalsData = async {
+                stockRepository.getStockFundamentals(
+                    identifier,
+                    startFromEpoch = startAndEndTimeEpoch.first,
+                    endEpoch = startAndEndTimeEpoch.second
+                )
+            }
+
+            _stockChartData.value = stockChartData.await()
+            _stockFundamentalsData.value = stockFundamentalsData.await()
+        }
+    }
+
+    fun updateSelectedTimeRange(timeRange: TimeRange) {
+        if (timeRange != this._selectedTimeRange.value) {
+            this._selectedTimeRange.value = timeRange
         }
     }
 }
