@@ -61,13 +61,13 @@ class StockViewModel @Inject constructor(
         }
     }
 
-    fun getStockDetailsFromInterval(identifier: String) {
+    fun getStockDetailsFromInterval(identifier: String, ipoOfferingTime: Long? = null) {
         val startEpoch = EpochTimeHelper.subtractTimeRangeFromEpoch(_selectedTimeRange.value)
 
         viewModelScope.launch {
             _stockChartData.value = stockRepository.getStockChartDetails(
                 identifier = identifier,
-                startFromEpoch = startEpoch,
+                startFromEpoch = ipoOfferingTime ?: startEpoch,
                 endEpoch = System.currentTimeMillis(),
                 interval = getInterval()
             )

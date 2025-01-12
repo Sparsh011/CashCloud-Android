@@ -64,7 +64,14 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
                 },
                 onTimeUnitChange = {
                     stockViewModel.updateSelectedTimeRange(it)
-                    stockViewModel.getStockDetailsFromInterval(identifier = symbol)
+                    if (it == TimeRange.ALL) {
+                        stockViewModel.getStockDetailsFromInterval(
+                            identifier = symbol,
+                            ipoOfferingTime = getIpoOfferingTimeFromStockDetails()
+                        )
+                    } else {
+                        stockViewModel.getStockDetailsFromInterval(identifier = symbol)
+                    }
                 },
                 selectedTimeRange = selectedTimeRange.value
             )
@@ -72,6 +79,17 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
 
         observeStock()
         observeTimeRangeSelected()
+    }
+
+    private fun getIpoOfferingTimeFromStockDetails(): Long? {
+        return when (stockDetails.value) {
+            is UiState.Success -> {
+                (stockDetails.value as UiState.Success<StockChartResponse>).data.chart.result[0].meta.firstTradeDate.toLong()
+            }
+            else -> {
+                null
+            }
+        }
     }
 
     private fun observeStock() {
