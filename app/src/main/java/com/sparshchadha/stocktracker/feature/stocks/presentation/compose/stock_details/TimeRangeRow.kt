@@ -56,7 +56,7 @@ private fun TimeRangeItem(
             modifier = modifier
                 .clip(RoundedCornerShape(Dimensions.cornerRadius()))
                 .background(Color.Gray),
-            color = primaryTextColor,
+            color = Color.White,
             fontSize = FontSizes.smallNonScaledFontSize(),
             textAlign = TextAlign.Center,
         )
