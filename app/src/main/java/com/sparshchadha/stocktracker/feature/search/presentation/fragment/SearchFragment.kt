@@ -22,12 +22,10 @@ import com.sparshchadha.stocktracker.feature.search.data.remote.dto.Quote
 import com.sparshchadha.stocktracker.feature.search.data.remote.dto.SecuritySearchResponse
 import com.sparshchadha.stocktracker.feature.search.domain.entity.SearchHistoryEntity
 import com.sparshchadha.stocktracker.feature.search.presentation.compose.SearchScreen
-import com.sparshchadha.stocktracker.feature.search.presentation.compose.stockExchangeToCurrencyMap
 import com.sparshchadha.stocktracker.feature.search.presentation.viewmodel.SearchViewModel
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import okhttp3.internal.connection.Exchange
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment(R.layout.fragment_search) {

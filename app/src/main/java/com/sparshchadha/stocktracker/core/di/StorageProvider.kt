@@ -2,7 +2,6 @@ package com.sparshchadha.stocktracker.core.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.sparshchadha.stocktracker.core.storage.room.CashCloudDB
 import com.sparshchadha.stocktracker.feature.search.data.local.room.dao.SearchDao
 import dagger.Module

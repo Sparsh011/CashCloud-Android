@@ -1,14 +1,11 @@
 package com.sparshchadha.stocktracker.core.common.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 object EpochTimeHelper {
     fun getEpochTimesForPeriod(
         exchange: String,
@@ -129,6 +126,7 @@ object EpochTimeHelper {
                 }
 
                 TimeRange.ALL -> {
+                    // Should never execute this, but if it does, throw overflow error
                     LocalDate.now().minusYears(LocalDate.MAX.year.toLong())
                 }
             }

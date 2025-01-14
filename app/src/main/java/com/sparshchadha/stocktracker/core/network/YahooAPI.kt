@@ -32,6 +32,14 @@ interface YahooAPI {
         @Query("period1") startFromEpoch: Long,
         @Query("period2") endEpoch: Long,
         @Query("lang") language: String = "en-US",
+        @Query("type") type: String = """
+            quarterlyMarketCap,trailingMarketCap,quarterlyEnterpriseValue,trailingEnterpriseValue,
+            quarterlyPeRatio,trailingPeRatio,quarterlyForwardPeRatio,trailingForwardPeRatio,
+            quarterlyPegRatio,trailingPegRatio,quarterlyPsRatio,trailingPsRatio,
+            quarterlyPbRatio,trailingPbRatio,quarterlyEnterprisesValueRevenueRatio,
+            trailingEnterprisesValueRevenueRatio,quarterlyEnterprisesValueEBITDARatio,
+            trailingEnterprisesValueEBITDARatio
+        """.trimIndent()
     ): Response<StockFundamentalsResponse>
 
     companion object {
