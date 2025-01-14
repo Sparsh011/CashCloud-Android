@@ -13,6 +13,7 @@ import com.sparshchadha.stocktracker.core.base.presentation.fragment.BaseFragmen
 import com.sparshchadha.stocktracker.core.common.utils.TimeRange
 import com.sparshchadha.stocktracker.core.common.utils.UiState
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockChartResponse
+import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.StockFundamentalsResponse
 import com.sparshchadha.stocktracker.feature.stocks.presentation.compose.stock_details.StockDetailScreen
 import com.sparshchadha.stocktracker.feature.stocks.presentation.viewmodel.StockViewModel
 import com.sparshchadha.stocktracker.navigation.CashCloudNavGraph
@@ -29,6 +30,8 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
 
     private var stockDetails = mutableStateOf<UiState<StockChartResponse>?>(null)
     private var selectedTimeRange = mutableStateOf(TimeRange.DAY_1)
+    private val stockFundaments = mutableStateOf<UiState<StockFundamentalsResponse>?>(null)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +77,7 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
                     }
                 },
                 selectedTimeRange = selectedTimeRange.value,
+                stockFundamentals = stockFundaments.value,
                 onRetry = {
                     stockViewModel.getStockDetails(symbol, exchange)
                 }
@@ -82,6 +86,7 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
 
         observeStock()
         observeTimeRangeSelected()
+        observeStockFundamentals()
     }
 
     private fun getIpoOfferingTimeFromStockDetails(): Long? {
@@ -89,6 +94,7 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
             is UiState.Success -> {
                 (stockDetails.value as UiState.Success<StockChartResponse>).data.chart.result[0].meta.firstTradeDate.toLong()
             }
+
             else -> {
                 null
             }
@@ -105,6 +111,15 @@ class StockDetailsFragment : BaseFragment(R.layout.fragment_stock_details) {
         }
     }
 
+    private fun observeStockFundamentals() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                stockViewModel.stockFundamentalsData.collectLatest {
+                    stockFundaments.value = it
+                }
+            }
+        }
+    }
 
     private fun observeTimeRangeSelected() {
         lifecycleScope.launch {
