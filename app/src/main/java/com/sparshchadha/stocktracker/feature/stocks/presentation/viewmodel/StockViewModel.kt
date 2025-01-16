@@ -13,6 +13,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,11 +36,6 @@ class StockViewModel @Inject constructor(
         _stockFundamentalsData.value = UiState.Loading
 
         viewModelScope.launch {
-            val startAndEndTimeEpoch = EpochTimeHelper.getEpochTimesForPeriod(
-                exchange = exchange,
-                period = TimeRange.DAY_1.dateStr
-            )
-
             val stockChartData = async {
                 stockRepository.getStockChartDetails(
                     identifier,
@@ -49,12 +46,16 @@ class StockViewModel @Inject constructor(
             }
 
             val stockFundamentalsData = async {
+                val startDate = LocalDate.now().minusMonths(6)
+                val startEpoch = startDate.atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+
                 stockRepository.getStockFundamentals(
                     identifier,
-                    startFromEpoch = startAndEndTimeEpoch.first,
-                    endEpoch = startAndEndTimeEpoch.second
+                    startFromEpoch = startEpoch,
+                    endEpoch = System.currentTimeMillis() / 1000 // Dividing by 1000 to convert from ms to s
                 )
             }
+
 
             _stockChartData.value = stockChartData.await()
             _stockFundamentalsData.value = stockFundamentalsData.await()

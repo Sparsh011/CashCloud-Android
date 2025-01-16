@@ -11,16 +11,16 @@ data class TradingPeriods(
 )
 
 data class Regular(
-    val end: Int,
-    val gmtoffset: Int,
-    val start: Int,
+    val end: Long,
+    val gmtoffset: Long,
+    val start: Long,
     val timezone: String
 )
 
 data class Result(
     val indicators: Indicators,
     val meta: Meta,
-    val timestamp: List<Int>
+    val timestamp: List<Long>
 )
 
 data class Quote(
@@ -28,20 +28,20 @@ data class Quote(
     val high: List<Double>,
     val low: List<Double>,
     val `open`: List<Double>,
-    val volume: List<Int>
+    val volume: List<Long>
 )
 
 data class Pre(
-    val end: Int,
-    val gmtoffset: Int,
-    val start: Int,
+    val end: Long,
+    val gmtoffset: Long,
+    val start: Long,
     val timezone: String
 )
 
 data class Post(
-    val end: Int,
-    val gmtoffset: Int,
-    val start: Int,
+    val end: Long,
+    val gmtoffset: Long,
+    val start: Long,
     val timezone: String
 )
 
@@ -54,9 +54,9 @@ data class Meta(
     val exchangeTimezoneName: String,
     val fiftyTwoWeekHigh: Double,
     val fiftyTwoWeekLow: Double,
-    val firstTradeDate: Int,
+    val firstTradeDate: Long,
     val fullExchangeName: String,
-    val gmtoffset: Int,
+    val gmtoffset: Long,
     val hasPrePostMarketData: Boolean,
     val instrumentType: String,
     val longName: String,
@@ -66,7 +66,7 @@ data class Meta(
     val regularMarketDayHigh: Double?,
     val regularMarketDayLow: Double?,
     val regularMarketPrice: Double,
-    val regularMarketTime: Int,
+    val regularMarketTime: Long,
     val regularMarketVolume: Int,
     val scale: Int,
     val shortName: String,
