@@ -32,13 +32,14 @@ fun StockDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(primaryAppBackground)
+            .verticalScroll(rememberScrollState())
     ) {
         CashCloudTopBar(identifier, onBackPress = onBackPress)
 
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-            ChartDetails(stockDetails, onTimeUnitChange, selectedTimeRange, onRetry)
+            ChartAndPerformanceDetails(stockDetails, onTimeUnitChange, selectedTimeRange, onRetry)
 
             Fundamentals(stockFundamentals, onRetry)
         }
@@ -68,23 +69,23 @@ fun Fundamentals(
 
 
 @Composable
-private fun ChartDetails(
+private fun ChartAndPerformanceDetails(
     stockDetails: UiState<StockChartResponse>?,
     onTimeUnitChange: (TimeRange) -> Unit,
     selectedTimeRange: TimeRange,
     onRetry: () -> Unit
 ) {
     when (stockDetails) {
-        UiState.Loading, is UiState.LoadingWithData -> {
-            SecurityDetailLoadingShimmer()
-        }
-
         is UiState.Success -> {
             StockDetails(stockDetails.data, onTimeUnitChange, selectedTimeRange)
         }
 
         is UiState.Error -> {
             ErrorScreen(stockDetails.error, onRetryClick = onRetry)
+        }
+
+        UiState.Loading, is UiState.LoadingWithData -> {
+            SecurityDetailLoadingShimmer()
         }
 
         else -> {

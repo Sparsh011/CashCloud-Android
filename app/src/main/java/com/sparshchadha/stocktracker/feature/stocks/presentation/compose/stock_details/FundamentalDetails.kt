@@ -38,17 +38,18 @@ fun StockFundamentalsCard(results: List<ResultTimeSeries>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(Dimensions.mediumPadding())
+            .padding(vertical = Dimensions.mediumPadding(), horizontal = Dimensions.extraSmallPadding())
     ) {
         Text(
             text = "Stock Fundamentals",
             fontWeight = FontWeight.Bold,
             color = primaryTextColor,
-            fontSize = FontSizes.mediumFontSize().value.sp
+            fontSize = FontSizes.largeNonScaledFontSize()
         )
+
         Spacer(modifier = Modifier.height(Dimensions.mediumPadding()))
 
-        InfoRow(label = "Market Cap", value = trailingMarketCap + " " + currency)
+        InfoRow(label = "Market Cap", value = "$trailingMarketCap $currency")
 
         InfoRow(label = "PE Ratio", value = trailingPeRatio)
 
