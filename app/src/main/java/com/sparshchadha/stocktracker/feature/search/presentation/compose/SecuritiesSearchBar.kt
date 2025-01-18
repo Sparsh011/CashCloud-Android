@@ -10,8 +10,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
@@ -34,7 +34,8 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecuritiesSearchBar(
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onBackPress: () -> Unit
 ) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
 
@@ -52,7 +53,12 @@ fun SecuritiesSearchBar(
                 placeholder = {
                     ShuffleText(shufflingTexts = arrayOf("Mutual Funds", "Stocks", "ETFs"))
                 },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                leadingIcon = {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier.clickable { onBackPress() })
+                },
                 trailingIcon = {
                     Icon(
                         Icons.Default.Clear,

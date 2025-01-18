@@ -33,6 +33,7 @@ import com.sparshchadha.stocktracker.core.common.extensions.toCurrencyString
 import com.sparshchadha.stocktracker.core.theme.Dimensions
 import com.sparshchadha.stocktracker.core.theme.FontSizes
 import com.sparshchadha.stocktracker.core.theme.primaryPurple
+import com.sparshchadha.stocktracker.core.theme.primaryRed
 import com.sparshchadha.stocktracker.core.theme.primaryTextColor
 import com.sparshchadha.stocktracker.feature.stocks.data.remote.dto.Meta
 
@@ -141,23 +142,6 @@ private fun PerformanceTab(
         )
     }
 
-    var priceTextWidth by remember { mutableIntStateOf(0) }
-
-    val offsetXCurrentPrice =
-        LocalConfiguration.current.screenWidthDp.toFloat() * (lineGraphPositionPercent) - (priceTextWidth / 2)
-
-    PriceText(
-        price = regularMarketPrice.toFloat(),
-        modifier = Modifier
-            .offset(x = offsetXCurrentPrice.dp)
-            .padding(horizontal = Dimensions.extraSmallPadding())
-            .onSizeChanged {
-                priceTextWidth = it.width
-            },
-        textAlign = TextAlign.Unspecified,
-        currency = currency
-    )
-
     val progress by animateFloatAsState(
         targetValue = if (isAnimationComplete) (lineGraphPositionPercent) else 0f,
         animationSpec = tween(450),
@@ -168,7 +152,7 @@ private fun PerformanceTab(
         progress = {
             progress
         },
-        color = primaryPurple,
+        color = primaryRed,
         trackColor = Color.LightGray,
         modifier = Modifier
             .fillMaxWidth()

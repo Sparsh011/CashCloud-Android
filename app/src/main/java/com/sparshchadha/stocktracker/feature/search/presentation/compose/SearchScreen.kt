@@ -20,7 +20,8 @@ fun SearchScreen(
     searchHistory: List<SearchHistoryEntity>,
     onDeleteSearchHistoryItem: (SearchHistoryEntity) -> Unit,
     onItemClick: (symbol: String, exchangeDisp: String) -> Unit,
-    onUpdateSearchHistory: (Quote) -> Unit
+    onUpdateSearchHistory: (Quote) -> Unit,
+    onBackPress: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -28,7 +29,7 @@ fun SearchScreen(
             .background(primaryAppBackground),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SecuritiesSearchBar(onSearch = onSearch)
+        SecuritiesSearchBar(onSearch = onSearch, onBackPress = onBackPress)
 
         if (showHistory) {
             SearchHistory(searchHistory = searchHistory, onDeleteClick = onDeleteSearchHistoryItem, onItemClick = onItemClick)
